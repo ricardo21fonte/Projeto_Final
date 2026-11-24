@@ -1,7 +1,7 @@
 # Relatorio de evidencias - Trabalho Pratico Integrador 01-06
 
 Nome: Ricardo Moreira da Fonte   Data: 24/11/2026
-URL do repositorio Git: ____________________________
+URL do repositorio Git: https://github.com/ricardo21fonte/Projeto_Final.git
 
 ## E01 - Ambiente (1 valor)
 Comandos e versoes observadas:
@@ -26,6 +26,8 @@ Ficheiros:
     Compose: compose.yaml
     Pipeline: Jenkinsfile
 
+A API está em app.py, os testes em tests/test_app.py, a configuração Compose em compose.yaml e a pipeline em Jenkinsfile.
+
 ## E02 - Dockerfile e container (3 valores)
 Tag da imagem; docker ps; HTTP /health; utilizador efetivo do container:
 Tag: docker ps natixis-support:1.0
@@ -42,7 +44,7 @@ HTTP: curl -i http://127.0.0.1:18080/health
 
         {"status":"ok","service":"support-api","version":"1.0"}
 
-
+A API respondeu com HTTP 200 e executou com UID 10001.
 
 ## E03 - Compose, DNS, healthcheck e volume (4 valores)
 Resultado de docker compose config; health; teste checker -> api; contador antes/depois da recriacao:
@@ -78,13 +80,42 @@ CONTADOR: curl.exe http://127.0.0.1:18080/visits
 
 ## E05 - Git (3 valores)
 Branch, hashes de commits, merge e tag v1.0.0: 
+BRANCH: fix/health-info
+HASH: 60662ff (HEAD -> main, tag: v1.0.0, fix/health-info) fix: acrescentar identificacao no health
+      e1c3c94 feat: ambiente integrador funcional
+MERGE: git merge fix/health-info
+            Updating e1c3c94..60662ff
+            Fast-forward
+            app.py            | 3 ++-
+            tests/test_app.py | 1 +
+            2 files changed, 3 insertions(+), 1 deletion(-)
+TAG: (HEAD -> main, tag: v1.0.0, fix/health-info)
+
+A tag anotada v1.0.0 foi criada e aponta para 60662ff, que inclui a alteração ao endpoint e ao teste.
 
 ## E06 - Jenkins SUCCESS (4 valores)
 URL/numero do build, etapas e identificador da imagem construida:
+build 1 URL: sha256:84a59c6850d7680c8c822cd358657ce38668ba5291650b90486f4b92d482a0f4
+ETAPAS:  Checkout SCM    Checkout     Tests     Dockerbuild
+consultar pasta evidencias
 
+As etapas Checkout SCM, Checkout, Tests e Docker Build terminaram com sucesso. A imagem foi construída e o respetivo ID foi confirmado.
 ## E07 - Jenkins FAILURE e recuperacao (2 valores)
-Build FAILURE, etapa que falhou e excerto relevante do log; build SUCCESS apos correcao:
+Consultar pasta evidencias
+
+A pipeline falhou na etapa Tests porque o test_health esperava offline e a API devolveu ok, pelo que a etapa Docker Build foi saltada a frente. Depois de repor o test_health para ok num novo commit, a pipeline voltou a terminar com SUCCESS
 
 ## Verificacao final
 [ ] Dockerfile [ ] compose.yaml [ ] app.py [ ] tests/ [ ] Jenkinsfile
 [ ] Historico Git [ ] Tag v1.0.0 [ ] Evidencias E01-E07
+
+
+HISTORICO GIT
+
+ricar@Ricardo_Fonte MINGW64 ~/Desktop/DEVOPS/TP_Integrador_Kit_Formandos (main)
+$ git log --oneline --graph --decorate --all
+* d2bfb86 (HEAD -> main, origin/main) resuperaçao da validaçao no teste de health
+* 5bcbcd3 simulaçao de falha no teste de health
+* 4f19e72 Pipeline Jenkins completa
+* 60662ff (tag: v1.0.0, fix/health-info) fix: acrescentar identificacao no health
+* e1c3c94 feat: ambiente integrador funcional
