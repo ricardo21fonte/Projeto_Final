@@ -1,0 +1,4 @@
+# Configuracao intencionalmente defeituosa: diagnosticar antes de corrigir.
+services:
+  api:
+    command: ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8001"]

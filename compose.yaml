@@ -1,0 +1,40 @@
+name: natixis-integrador
+
+services:
+  api:
+    build: .
+    image: natixis-support:local
+    ports:
+      - "127.0.0.1:18080:8000"
+    environment:
+      SERVICE_NAME: support-api-integrador
+      DATA_DIR: /data
+    volumes:
+      - app-data:/data
+    healthcheck: 
+      test: 
+        - CMD 
+        - python 
+        - -c 
+        - > 
+          import urllib.request; 
+          urllib.request.urlopen( 
+            'http://127.0.0.1:8000/health', 
+            timeout=3 
+          ) 
+      interval: 10s 
+      timeout: 5s 
+      retries: 3 
+      start_period: 10s 
+    # TODO: adicionar healthcheck HTTP a /health usando python/urllib (sem instalar curl)
+
+  checker:
+    image: curlimages/curl:8.11.1
+    profiles: ["diagnostico"]
+    depends_on:
+      api:
+        condition: service_healthy
+    # TODO: adicionar depends_on para aguardar api com condition: service_healthy
+
+volumes:
+  app-data:
